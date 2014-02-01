@@ -1,0 +1,4 @@
+gen_love/*
+*.sublime-workspace
+*.love
+*.zip

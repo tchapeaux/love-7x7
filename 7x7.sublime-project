@@ -1,0 +1,20 @@
+{
+    "build_systems":
+    [
+        {
+            "name": "Compile .moon files & Run",
+            "shell_cmd": "cp -ru ./res ./gen_love && cd ./src && moonc -t ../gen_love . && cd ../gen_love && ../love-release.sh -l -r build -n GameOfLove -v 0.8.0 && cd build/0.8.0 && love GameOfLove.love",
+            "working_dir": "$project_path"
+        }
+    ],
+    "folders":
+    [
+        {
+            "follow_symlinks": true,
+            "name": "7x7",
+            "path": "./"
+            // "file_exclude_patterns": [""],
+            // "folder_exclude_patterns": [""]
+        }
+    ]
+}
