@@ -120,6 +120,12 @@ class Grid
                             @select mouseP
 
     draw: =>
+        @drawBackground!
+        if @selecting
+            @drawSelectionLines!
+        @drawPoints!
+
+    drawBackground: =>
         love.graphics.setBackgroundColor {255, 255, 255}
         if @selecting and @selectionLoopPoint
             loopColor = @selectionLoopPoint.color
@@ -128,21 +134,22 @@ class Grid
             love.graphics.setColor {r, g, b, alpha}
             love.graphics.rectangle "fill", 0, 0, @w, @h
 
-        if @selecting
-            first_p = @selection[1]
-            love.graphics.setColor darker first_p.color
-            love.graphics.setLineWidth 5
-            mX, mY = love.mouse.getX!, love.mouse.getY!
-            prev_p = first_p
-            for i, p in ipairs @selection
-                if i > 1
-                    {prev_x, prev_y} = @pointCoordinate prev_p
-                    {cur_x, cur_y} = @pointCoordinate p
-                    love.graphics.line prev_x, prev_y, cur_x, cur_y
-                prev_p = p
-            {prev_x, prev_y} = @pointCoordinate prev_p
-            love.graphics.line prev_x, prev_y, mX, mY
+    drawSelectionLines: =>
+        first_p = @selection[1]
+        love.graphics.setColor darker first_p.color
+        love.graphics.setLineWidth 5
+        mX, mY = love.mouse.getX!, love.mouse.getY!
+        prev_p = first_p
+        for i, p in ipairs @selection
+            if i > 1
+                {prev_x, prev_y} = @pointCoordinate prev_p
+                {cur_x, cur_y} = @pointCoordinate p
+                love.graphics.line prev_x, prev_y, cur_x, cur_y
+            prev_p = p
+        {prev_x, prev_y} = @pointCoordinate prev_p
+        love.graphics.line prev_x, prev_y, mX, mY
 
+    drawPoints: =>
         for i, col in pairs @points
             for j, point in pairs col
                 {x, y} = @pointCoordinate point
@@ -150,6 +157,7 @@ class Grid
                 love.graphics.translate x, y
                 point\draw @pointsRadius
                 love.graphics.pop!
+
 
     select: (p) =>
         table.insert @selection, p
