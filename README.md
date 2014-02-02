@@ -14,4 +14,5 @@ Up/Down arrow: change grid size
 
 Screenshots
 -----------
+
 ![ingame screenshot](screenshots/001.png "Ingame screenshot")
