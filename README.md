@@ -8,7 +8,7 @@ Written in [MoonScript](http://moonscript.org/) with the [LÖVE](http://love2d.o
 Download
 --------
 
-Up-to-date build thanks to [StackMachine](https://stackmachine.com/)
+Up-to-date builds thanks to [StackMachine](https://stackmachine.com/)
 * [Windows](https://stackmachine.com/games/80d60da20c0780b5230007df/download/windows) (never tested)
 * [OSX](https://stackmachine.com/games/80d60da20c0780b5230007df/download/osx)
 * [.love](https://stackmachine.com/games/80d60da20c0780b5230007df/download/love)
