@@ -31,25 +31,34 @@ love.update = (dt) ->
     else
         grid\update dt
 
+resetGrid = (newSize) ->
+    if newSize == nil
+        newSize = gridSize
+    if newSize == "up"
+        newSize = grid.size + 1
+    if newSize == "down"
+        newSize = grid.size - 1
+    score = grid.score
+    grid = Grid newSize
+    grid.score = score
+
 love.keyreleased = (key) ->
     switch key
         when "escape"
             menu.active = not menu.active
         when "r"
             unless menu.active
-                grid = Grid gridSize
+                resetGrid!
         when "up"
             if menu.active
                 menu\keyreleased key
             else
-                gridSize += 1
-                grid = Grid gridSize
+                resetGrid "up"
         when "down"
             if menu.active
                 menu\keyreleased key
             else
-                gridSize -= 1
-                grid = Grid gridSize
+                resetGrid "down"
         when "f11"
             width, height, fullscreen, vsync, fsaa = love.graphics.getMode!
             love.graphics.setMode width, height, not fullscreen, vsync, fsaa
