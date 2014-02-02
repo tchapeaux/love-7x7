@@ -8,6 +8,7 @@ class Menu
         @options = {
             "Resume"
             "Reset Score"
+            "Controls"
             "Credits"
             "Quit"
         }
@@ -22,6 +23,13 @@ Made by Altom for a pretty Cookie
 Github: https://github.com/tchapeaux/love-7x7
 
 >>> Press Enter to return to the menu <<<"
+        @controlsText = "Click and drag to match similar colors
+Up/Down arrows: change grid size
+R: Reset Grid
+
+
+>>> Press Enter to return to the menu <<<"
+
         @displayText = nil
 
     draw: =>
@@ -68,6 +76,8 @@ Github: https://github.com/tchapeaux/love-7x7
             when "Reset Score"
                 grid.score = 0
                 @active= false
+            when "Controls"
+                @displayText = @controlsText
             when "Credits"
                 @displayText = @creditText
             when "Quit"
