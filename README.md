@@ -20,4 +20,4 @@ Controls
 Screenshots
 -----------
 
-![ingame screenshot](screenshots/001.png "Ingame screenshot")
+![ingame screenshot](screenshots/gameplay.png "Ingame screenshot")
