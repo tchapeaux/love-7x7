@@ -82,7 +82,7 @@ class Grid
             @drawSelectionLines!
         @drawPoints!
         love.graphics.setColor {0, 0, 0}
-        love.graphics.printf "Score: #{@score}\n(z to reset)",
+        love.graphics.printf "Score: #{@score}",
             @w/2, 10, @w/2 - 10, "right"
 
     drawBackground: =>
