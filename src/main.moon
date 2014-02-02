@@ -45,7 +45,10 @@ resetGrid = (newSize) ->
 love.keyreleased = (key) ->
     switch key
         when "escape"
-            menu.active = not menu.active
+            if not menu.active
+                menu.active = true
+            else
+                menu\keyreleased key
         when "r"
             unless menu.active
                 resetGrid!

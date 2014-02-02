@@ -8,25 +8,39 @@ class Menu
         @options = {
             "Resume"
             "Reset Score"
-            "Instructions (coming soon...)"
-            "Credits (coming soon...)"
+            "Credits"
             "Quit"
         }
         @optionHeight = 30
         @margin = 10
         @selected = 1
+        @creditText = "7x7 - an open-source clone of DOTS
+Original game: www.weplaydots.com
+
+
+Made by Altom for a pretty Cookie
+Github: https://github.com/tchapeaux/love-7x7
+
+>>> Press Enter to return to the menu <<<"
+        @displayText = nil
 
     draw: =>
-        yO = @h / 2 - (#@options * @optionHeight + (#@options - 1) * @margin) / 2
-        for i, opt in ipairs @options
-            y = yO + (i-1) * (@optionHeight + @margin)
+        if @displayText
             love.graphics.setColor {0, 0, 0, 200}
-            love.graphics.rectangle "fill", 0, y, @w, @optionHeight
+            love.graphics.rectangle("fill", 0, @h / 4, @w, @h / 2)
             love.graphics.setColor {255, 255, 255}
-            love.graphics.printf opt, 0, y, @w, "center"
-            if i == @selected
-                love.graphics.printf ">>>>", 0, y, @w, "left"
-                love.graphics.printf "<<<<", 0, y, @w, "right"
+            love.graphics.printf @displayText, 0, @h / 4 + 30, @w, "center"
+        else
+            for i, opt in ipairs @options
+                love.graphics.setColor {0, 0, 0, 200}
+                yO = @h / 2 - (#@options * @optionHeight + (#@options - 1) * @margin) / 2
+                y = yO + (i-1) * (@optionHeight + @margin)
+                love.graphics.rectangle "fill", 0, y, @w, @optionHeight
+                love.graphics.setColor {255, 255, 255}
+                love.graphics.printf opt, 0, y, @w, "center"
+                if i == @selected
+                    love.graphics.printf ">>>>", 0, y, @w, "left"
+                    love.graphics.printf "<<<<", 0, y, @w, "right"
 
     update: (dt) =>
 
@@ -39,7 +53,13 @@ class Menu
                 @selected += 1
                 @selected = ((@selected - 1) % #@options) + 1
             when "return"
-                @selectAction!
+                if @displayText
+                    @displayText = nil
+                else
+                    @selectAction!
+            when "escape"
+                @displayText = nil
+                @active = false
 
     selectAction: =>
         switch @options[@selected]
@@ -48,5 +68,7 @@ class Menu
             when "Reset Score"
                 grid.score = 0
                 @active= false
+            when "Credits"
+                @displayText = @creditText
             when "Quit"
                 love.event.quit!
