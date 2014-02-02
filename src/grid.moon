@@ -9,11 +9,6 @@ class Point
         @animation_timer = 0
         @animation_duration = math.random(35, 40) / 100
 
-    adjacent: (otherP) =>
-        dx = math.abs(@i - otherP.i)
-        dy = math.abs(@j - otherP.j)
-        return dx + dy == 1
-
     update: (dt) =>
         if @animation_timer > @animation_duration
             @animation_timer = @animation_duration
@@ -21,6 +16,15 @@ class Point
                 @origin_j = @j
         elseif @animation_timer < @animation_duration
             @animation_timer += dt
+
+    adjacent: (otherP) =>
+        dx = math.abs(@i - otherP.i)
+        dy = math.abs(@j - otherP.j)
+        return dx + dy == 1
+
+    goDown: =>
+        @animation_timer = 0
+        @j = @j + 1
 
 
 class Grid
@@ -153,9 +157,8 @@ class Grid
     deletePoint: (p) =>
         i = p.i
         for j = p.j, 2, -1
-            color = @points[i][j - 1].color
-            origin = @points[i][j - 1].origin_j
-            @points[i][j] = Point i, j, color, origin
+            @points[i][j - 1]\goDown!
+            @points[i][j] = @points[i][j - 1]
         @points[i][1] = Point i, 1
 
     mousepressed: (x, y, button) =>
