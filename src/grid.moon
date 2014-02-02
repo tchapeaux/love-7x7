@@ -3,10 +3,11 @@ export ^
 require "colors"
 
 class Point
-    new: (@i, @j, @color) =>
-        if @color == nil
-            @color = randomColor!
+    new: (@i, @j, @color=randomColor!, @origin_j = -math.random(1, 3)) =>
         @selected = false
+        -- animation is handled by the Grid but the timer is here
+        @animation_timer = 0
+        @animation_duration = math.random(2, 4) / 10
 
     adjacent: (otherP) =>
         dx = math.abs(@i - otherP.i)
@@ -14,6 +15,12 @@ class Point
         return dx + dy == 1
 
     update: (dt) =>
+        if @animation_timer > @animation_duration
+            @animation_timer = @animation_duration
+            if @origin_j ~= @j
+                @origin_j = @j
+        elseif @animation_timer < @animation_duration
+            @animation_timer += dt
 
 
 class Grid
@@ -36,11 +43,15 @@ class Grid
     pointCoordinate: (p) =>
         -- give screen coordinate of point p
         i, j = p.i, p.j
+        pointSize = (2 * @pointsRadius + @pointsMargin)
         {offX, offY} = @topLeftCoord!
-        x = offX + @pointsMargin + (i - 1) * (2 * @pointsRadius + @pointsMargin)
-        y = offY + @pointsMargin + (j - 1) * (2 * @pointsRadius + @pointsMargin)
+        x = offX + @pointsMargin + (i - 1) * pointSize
+        y = offY + @pointsMargin + (j - 1) * pointSize
+        orig_y = offY + @pointsMargin + (p.origin_j - 1) * pointSize
+        -- animation
+        animation_scale = p.animation_timer / p.animation_duration
+        y = orig_y + animation_scale * (y - orig_y)
         return {x, y}
-
 
     insidePoint: (x, y) =>
         -- return coordinate of a point if x, y is inside this point,
@@ -59,6 +70,9 @@ class Grid
 
 
     update: (dt) =>
+        for i, col in pairs @points
+            for j, point in pairs col
+                point\update dt
         if @selecting
             lastPoint = @selection[#@selection]
             mX, mY = love.mouse.getX!, love.mouse.getY!
@@ -66,7 +80,8 @@ class Grid
             if selectP_X and selectP_Y
                 p = @points[selectP_X][selectP_Y]
                 if lastPoint\adjacent(p) and lastPoint.color == p.color
-                    @select p
+                    if not @inSelection p
+                        @select p
 
     draw: =>
         for i, col in pairs @points
@@ -96,14 +111,13 @@ class Grid
         p.selected = true
 
     inSelection: (p) =>
-        for i, selectP in @selection
+        for i, selectP in ipairs @selection
             if p == selectP
                 return true
         return false
 
     clearSelected: =>
-        mustDelete = #@selection >= 4
-        print "#{mustDelete}"
+        mustDelete = #@selection > 1
         for i, p in ipairs @selection
             if mustDelete
                 @deletePoint p
@@ -114,7 +128,9 @@ class Grid
     deletePoint: (p) =>
         i = p.i
         for j = p.j, 2, -1
-            @points[i][j] = @points[i][i - 1]
+            color = @points[i][j - 1].color
+            origin = @points[i][j - 1].origin_j
+            @points[i][j] = Point i, j, color, origin
         @points[i][1] = Point i, 1
 
     mousepressed: (x, y, button) =>
