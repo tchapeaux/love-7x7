@@ -7,5 +7,11 @@ Written in [MoonScript](http://moonscript.org/) with the [LÖVE](http://love2d.o
 
 Controls
 --------
+
 Click and drag to select points of similar color
+
 Up/Down arrow: change grid size
+
+Screenshots
+-----------
+![ingame screenshot](screenshots/001.png "Ingame screenshot")
