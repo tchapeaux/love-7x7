@@ -2,9 +2,11 @@ io.stdout\setvbuf'no'
 
 export grid
 
+gridSize = 9
+
 love.load = ->
     require "grid"
-    grid = Grid 7
+    grid = Grid gridSize
 
 love.draw = ->
     grid\draw!
@@ -16,6 +18,8 @@ love.keyreleased = (key) ->
     switch key
         when "escape"
             love.event.quit!
+        when "r"
+            grid = Grid gridSize
 
 love.mousepressed = (x, y, button) ->
     grid\mousepressed(x, y, button)
