@@ -3,11 +3,11 @@ export ^
 require "colors"
 
 class Point
-    new: (@i, @j, @color=randomColor!, @origin_j = -math.random(1, 3)) =>
+    new: (@i, @j, @color=randomColor!, @origin_j = -3) =>
         @selected = false
         -- animation is handled by the Grid but the timer is here
         @animation_timer = 0
-        @animation_duration = math.random(2, 4) / 10
+        @animation_duration = math.random(35, 40) / 100
 
     adjacent: (otherP) =>
         dx = math.abs(@i - otherP.i)
@@ -65,8 +65,8 @@ class Grid
                 dy = yP - y
                 dist = math.sqrt dx * dx + dy * dy
                 if dist <= @pointsRadius
-                    return {i, j}
-        return {nil, nil}
+                    return @points[i][j]
+        return nil
 
 
     update: (dt) =>
@@ -74,14 +74,18 @@ class Grid
             for j, point in pairs col
                 point\update dt
         if @selecting
-            lastPoint = @selection[#@selection]
+            lastP = @selection[#@selection]
+            local lastlastP
+            if #@selection > 1
+                lastlastP = @selection[#@selection - 1]
             mX, mY = love.mouse.getX!, love.mouse.getY!
-            {selectP_X, selectP_Y} = @insidePoint mX, mY
-            if selectP_X and selectP_Y
-                p = @points[selectP_X][selectP_Y]
-                if lastPoint\adjacent(p) and lastPoint.color == p.color
-                    if not @inSelection p
-                        @select p
+            mouseP = @insidePoint mX, mY
+            if mouseP
+                if lastP\adjacent(mouseP) and lastP.color == mouseP.color
+                    if mouseP == lastlastP
+                        @unselect lastP
+                    if not @inSelection mouseP
+                        @select mouseP
 
     draw: =>
         for i, col in pairs @points
@@ -110,6 +114,14 @@ class Grid
         table.insert @selection, p
         p.selected = true
 
+    unselect: (p) =>
+        -- find and remove point
+        for i, point in ipairs @selection
+            if point == p
+                table.remove @selection, i
+                break
+        p.selected = false
+
     inSelection: (p) =>
         for i, selectP in ipairs @selection
             if p == selectP
@@ -136,10 +148,10 @@ class Grid
     mousepressed: (x, y, button) =>
         switch button
             when "l"
-                {selectP_X, selectP_Y} = @insidePoint(x, y)
-                if selectP_X and selectP_Y
+                mouseP = @insidePoint(x, y)
+                if mouseP
                     @selecting = true
-                    @select @points[selectP_X][selectP_Y]
+                    @select mouseP
 
     mousereleased: (x, y, button) =>
         switch button
