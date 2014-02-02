@@ -15,6 +15,7 @@ class Grid
         @selection = {}
         @selecting = false
         @selectionLoopPoint = nil
+        @score = 0
 
     topLeftCoord: =>
         gridWidth = 2 * @pointsRadius * @size + @pointsMargin * (@size - 1)
@@ -80,6 +81,8 @@ class Grid
         if @selecting
             @drawSelectionLines!
         @drawPoints!
+        love.graphics.setColor {0, 0, 0}
+        love.graphics.printf "Score: #{@score}", @w/2, 10, @w/2 - 10, "right"
 
     drawBackground: =>
         love.graphics.setBackgroundColor {255, 255, 255}
@@ -152,6 +155,7 @@ class Grid
                         @deletePoint p
         @selection = {}
         @selectionLoopPoint = nil
+        love.filesystem.write "score.txt", "#{@score}"
 
     deletePoint: (p) =>
         i = p.i
@@ -159,6 +163,7 @@ class Grid
             @points[i][j - 1]\goDown!
             @points[i][j] = @points[i][j - 1]
         @points[i][1] = Point i, 1
+        @score += 1
 
     mousepressed: (x, y, button) =>
         switch button
