@@ -20,6 +20,9 @@ love.keyreleased = (key) ->
             love.event.quit!
         when "r"
             grid = Grid gridSize
+        when "f11"
+            width, height, fullscreen, vsync, fsaa = love.graphics.getMode!
+            love.graphics.setMode width, height, not fullscreen, vsync, fsaa
 
 love.mousepressed = (x, y, button) ->
     grid\mousepressed(x, y, button)
