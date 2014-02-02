@@ -5,6 +5,12 @@ A clone of [DOTS](http://weplaydots.com/), a somewhat popular mobile game.
 
 Written in [MoonScript](http://moonscript.org/) with the [LÖVE](http://love2d.org/) framework.
 
+Download
+--------
+* [Windows](https://stackmachine.com/games/80d60da20c0780b5230007df/download/windows) (never tested)
+* [OSX](https://stackmachine.com/games/80d60da20c0780b5230007df/download/osx)
+* [.love](https://stackmachine.com/games/80d60da20c0780b5230007df/download/love)
+
 Controls
 --------
 
