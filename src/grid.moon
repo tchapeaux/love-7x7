@@ -129,7 +129,7 @@ class Grid
         love.graphics.setBackgroundColor {255, 255, 255}
         if @selecting and @selectionLoopPoint
             loopColor = @selectionLoopPoint.color
-            r, g, b = loopColor.r, loopColor.g, loopColor.b
+            r, g, b = loopColor[1], loopColor[2], loopColor[3]
             alpha = 100
             love.graphics.setColor {r, g, b, alpha}
             love.graphics.rectangle "fill", 0, 0, @w, @h
