@@ -87,13 +87,22 @@ class Grid
             mouseP = @insidePoint mX, mY
             if mouseP and lastP\adjacent(mouseP) and lastP.color == mouseP.color
                 if mouseP == lastlastP
-                    @unselect lastP
+                    -- TODO: fix this hack
+                    if @selectionLoopPoint == lastP
+                        @selection[#@selection] = nil
+                        @selectionLoopPoint = nil
+                    else
+                        @unselect lastP
                 else
-                    if @inSelection mouseP
-                        @selectionLoopPoint = mouseP
-                    @select mouseP
+                    if not @inSelection mouseP
+                        @select mouseP
+                    else
+                        if @selectionLoopPoint == nil
+                            @selectionLoopPoint = mouseP
+                            @select mouseP
 
     draw: =>
+        love.graphics.setBackgroundColor {255, 255, 255}
         if @selecting and @selectionLoopPoint
             loopColor = @selectionLoopPoint.color
             alpha = 100
@@ -101,6 +110,7 @@ class Grid
             love.graphics.setColor loopColor
             table.remove loopColor
             love.graphics.rectangle "fill", 0, 0, @w, @h
+
         for i, col in pairs @points
             for j, point in pairs col
                 love.graphics.setColor point.color
@@ -133,7 +143,7 @@ class Grid
             if point == p
                 table.remove @selection, i
                 break
-        if @selectionLoopPoint = p
+        if @selectionLoopPoint == p
             @selectionLoopPoint = nil
         p.selected = false
 
