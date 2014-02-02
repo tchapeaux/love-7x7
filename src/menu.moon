@@ -1,5 +1,21 @@
 export ^
 
+export controlsText = "Click and drag to match similar colors
+Up/Down arrows: change grid size
+R: Reset Grid
+
+
+>>> Press Enter to return to the menu <<<"
+
+export creditText = "7x7 - an open-source clone of DOTS
+Original game: www.weplaydots.com
+
+
+Made by Altom for a pretty Cookie
+Github: https://github.com/tchapeaux/love-7x7
+
+>>> Press Enter to return to the menu <<<"
+
 class Menu
     new: =>
         @active = false
@@ -15,20 +31,6 @@ class Menu
         @optionHeight = 30
         @margin = 10
         @selected = 1
-        @creditText = "7x7 - an open-source clone of DOTS
-Original game: www.weplaydots.com
-
-
-Made by Altom for a pretty Cookie
-Github: https://github.com/tchapeaux/love-7x7
-
->>> Press Enter to return to the menu <<<"
-        @controlsText = "Click and drag to match similar colors
-Up/Down arrows: change grid size
-R: Reset Grid
-
-
->>> Press Enter to return to the menu <<<"
 
         @displayText = nil
 
@@ -77,8 +79,8 @@ R: Reset Grid
                 grid.score = 0
                 @active= false
             when "Controls"
-                @displayText = @controlsText
+                @displayText = controlsText
             when "Credits"
-                @displayText = @creditText
+                @displayText = creditText
             when "Quit"
                 love.event.quit!
