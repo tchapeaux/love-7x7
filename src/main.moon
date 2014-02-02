@@ -6,7 +6,7 @@ gridSize = 7
 
 love.load = ->
     require "grid"
-    font = love.graphics.newFont "res/font/ComicRelief.ttf", 15
+    font = love.graphics.newFont "res/font/ComicRelief.ttf", 20
     love.graphics.setFont font
     grid = Grid gridSize
     if love.filesystem.isFile "score.txt"
@@ -24,6 +24,8 @@ love.keyreleased = (key) ->
     switch key
         when "escape"
             love.event.quit!
+        when "z"
+            grid.score = 0
         when "r"
             grid = Grid gridSize
         when "up"
