@@ -85,14 +85,13 @@ class Grid
                 lastlastP = @selection[#@selection - 1]
             mX, mY = love.mouse.getX!, love.mouse.getY!
             mouseP = @insidePoint mX, mY
-            if mouseP
-                if lastP\adjacent(mouseP) and lastP.color == mouseP.color
-                    if mouseP == lastlastP
-                        @unselect lastP
-                    else
-                        if @inSelection mouseP
-                            @selectionLoopPoint = mouseP
-                        @select mouseP
+            if mouseP and lastP\adjacent(mouseP) and lastP.color == mouseP.color
+                if mouseP == lastlastP
+                    @unselect lastP
+                else
+                    if @inSelection mouseP
+                        @selectionLoopPoint = mouseP
+                    @select mouseP
 
     draw: =>
         if @selecting and @selectionLoopPoint
