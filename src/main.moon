@@ -2,7 +2,7 @@ io.stdout\setvbuf'no'
 
 export grid
 
-gridSize = 9
+gridSize = 7
 
 love.load = ->
     require "grid"
