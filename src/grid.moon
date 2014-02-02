@@ -34,6 +34,7 @@ class Grid
         @points = [ [Point j, i for i=1, @size] for j=1, @size]
         @selection = {}
         @selecting = false
+        @selectionLoopPoint = nil
 
     topLeftCoord: =>
         gridWidth = 2 * @pointsRadius * @size + @pointsMargin * (@size - 1)
@@ -84,10 +85,19 @@ class Grid
                 if lastP\adjacent(mouseP) and lastP.color == mouseP.color
                     if mouseP == lastlastP
                         @unselect lastP
-                    if not @inSelection mouseP
+                    else
+                        if @inSelection mouseP
+                            @selectionLoopPoint = mouseP
                         @select mouseP
 
     draw: =>
+        if @selecting and @selectionLoopPoint
+            loopColor = @selectionLoopPoint.color
+            alpha = 100
+            table.insert loopColor, alpha
+            love.graphics.setColor loopColor
+            table.remove loopColor
+            love.graphics.rectangle "fill", 0, 0, @w, @h
         for i, col in pairs @points
             for j, point in pairs col
                 love.graphics.setColor point.color
@@ -120,6 +130,8 @@ class Grid
             if point == p
                 table.remove @selection, i
                 break
+        if @selectionLoopPoint = p
+            @selectionLoopPoint = nil
         p.selected = false
 
     inSelection: (p) =>
@@ -135,7 +147,8 @@ class Grid
                 @deletePoint p
             else
                 p.selected = false
-            @selection = {}
+        @selection = {}
+        @selectionLoopPoint = nil
 
     deletePoint: (p) =>
         i = p.i
