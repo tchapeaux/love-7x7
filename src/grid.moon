@@ -105,19 +105,17 @@ class Grid
             mouseP = @insidePoint mX, mY
             if mouseP and lastP\adjacent(mouseP) and lastP.color == mouseP.color
                 if mouseP == lastlastP
-                    -- TODO: fix this hack
                     if @selectionLoopPoint == lastP
+                        -- TODO: fix this hack: should be handled by unselect
                         @selection[#@selection] = nil
                         @selectionLoopPoint = nil
                     else
                         @unselect lastP
                 else
-                    if not @inSelection mouseP
-                        @select mouseP
-                    else
-                        if @selectionLoopPoint == nil
+                    unless lastP == @selectionLoopPoint and @inSelection mouseP
+                        if @inSelection mouseP
                             @selectionLoopPoint = mouseP
-                            @select mouseP
+                        @select mouseP
 
     draw: =>
         @drawBackground!
