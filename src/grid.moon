@@ -146,11 +146,19 @@ class Grid
 
     clearSelected: =>
         mustDelete = #@selection > 1
+        -- delete selection
         for i, p in ipairs @selection
             if mustDelete
                 @deletePoint p
             else
                 p.selected = false
+        -- selectionLoop : delete all point of the same color
+        if @selectionLoopPoint
+            selectColor = @selectionLoopPoint.color
+            for i, col in pairs @points
+                for j, p in pairs col
+                    if p.color == selectColor
+                        @deletePoint p
         @selection = {}
         @selectionLoopPoint = nil
 
