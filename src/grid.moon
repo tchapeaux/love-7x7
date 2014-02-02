@@ -116,10 +116,11 @@ class Grid
                 @drawPoint point
 
         if @selecting
-            love.graphics.setColor {0, 0, 0}
+            first_p = @selection[1]
+            love.graphics.setColor first_p.color
             love.graphics.setLineWidth 2
             mX, mY = love.mouse.getX!, love.mouse.getY!
-            prev_p = @selection[1]
+            prev_p = first_p
             for i, p in ipairs @selection
                 if i > 1
                     {prev_x, prev_y} = @pointCoordinate prev_p
