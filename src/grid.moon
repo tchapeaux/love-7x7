@@ -113,13 +113,10 @@ class Grid
 
         for i, col in pairs @points
             for j, point in pairs col
-                love.graphics.setColor point.color
-                {x, y} = @pointCoordinate point
-                fillage = if point.selected then "line" else "fill"
-                love.graphics.circle(fillage, x, y, @pointsRadius, 2 * @pointsRadius)
+                @drawPoint point
 
         if @selecting
-            love.graphics.setColor {255, 255, 255}
+            love.graphics.setColor {0, 0, 0}
             love.graphics.setLineWidth 2
             mX, mY = love.mouse.getX!, love.mouse.getY!
             prev_p = @selection[1]
@@ -131,6 +128,16 @@ class Grid
                 prev_p = p
             {prev_x, prev_y} = @pointCoordinate prev_p
             love.graphics.line prev_x, prev_y, mX, mY
+
+    drawPoint: (p) =>
+        love.graphics.setColor p.color
+        {x, y} = @pointCoordinate p
+        local fillage, radius
+        fillage = "fill"
+        radius = @pointsRadius
+        if p.selected
+            radius += 5
+        love.graphics.circle(fillage, x, y, radius, 2 * radius)
 
 
     select: (p) =>
