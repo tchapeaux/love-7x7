@@ -1,11 +1,14 @@
 io.stdout\setvbuf'no'
 
-export grid
+export grid, menu
 
+w, h = love.graphics.getWidth!, love.graphics.getHeight!
 gridSize = 7
 
 love.load = ->
     require "grid"
+    require "menu"
+
     font = love.graphics.newFont "res/font/ComicRelief.ttf", 20
     love.graphics.setFont font
     grid = Grid gridSize
@@ -13,30 +16,46 @@ love.load = ->
         score, _ = love.filesystem.read "score.txt"
         score = tonumber score
         grid.score = score
+    menu = Menu!
 
 love.draw = ->
     grid\draw!
+    if menu.active
+        love.graphics.setColor {0, 0, 0, 100}
+        love.graphics.rectangle "fill", 0, 0, w, h
+        menu\draw!
 
 love.update = (dt) ->
-    grid\update dt
+    if menu.active
+        menu\update dt
+    else
+        grid\update dt
 
 love.keyreleased = (key) ->
     switch key
         when "escape"
-            love.event.quit!
-        when "z"
-            grid.score = 0
+            menu.active = not menu.active
         when "r"
-            grid = Grid gridSize
+            unless menu.active
+                grid = Grid gridSize
         when "up"
-            gridSize += 1
-            grid = Grid gridSize
+            if menu.active
+                menu\keyreleased key
+            else
+                gridSize += 1
+                grid = Grid gridSize
         when "down"
-            gridSize -= 1
-            grid = Grid gridSize
+            if menu.active
+                menu\keyreleased key
+            else
+                gridSize -= 1
+                grid = Grid gridSize
         when "f11"
             width, height, fullscreen, vsync, fsaa = love.graphics.getMode!
             love.graphics.setMode width, height, not fullscreen, vsync, fsaa
+        else
+            if menu.active
+                menu\keyreleased key
 
 love.mousepressed = (x, y, button) ->
     grid\mousepressed(x, y, button)
