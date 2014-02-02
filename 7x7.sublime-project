@@ -3,7 +3,7 @@
     [
         {
             "name": "Compile .moon files & Run",
-            "shell_cmd": "cp -ru ./res ./gen_love && cd ./src && moonc -t ../gen_love . && cd ../gen_love && ../love-release.sh -l -r build -n GameOfLove -v 0.8.0 && cd build/0.8.0 && love GameOfLove.love",
+            "shell_cmd": "cp -ru ./res ./gen_love && cd ./src && moonc -t ../gen_love . && cd ../gen_love && ../love-release.sh -l -r build -n 7x7 -v 0.8.0 && cd build/0.8.0 && love 7x7.love",
             "working_dir": "$project_path"
         }
     ],
