@@ -6,7 +6,13 @@ gridSize = 7
 
 love.load = ->
     require "grid"
+    font = love.graphics.newFont "res/font/ComicRelief.ttf", 15
+    love.graphics.setFont font
     grid = Grid gridSize
+    if love.filesystem.isFile "score.txt"
+        score, _ = love.filesystem.read "score.txt"
+        score = tonumber score
+        grid.score = score
 
 love.draw = ->
     grid\draw!
