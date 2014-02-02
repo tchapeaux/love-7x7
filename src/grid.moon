@@ -7,7 +7,7 @@ class Point
         @selected = false
         -- animation is handled by the Grid but the timer is here
         @animation_timer = 0
-        @animation_duration = math.random(35, 40) / 100
+        @animation_duration = math.random(45, 55) / 100
 
     update: (dt) =>
         if @animation_timer > @animation_duration
@@ -16,6 +16,24 @@ class Point
                 @origin_j = @j
         elseif @animation_timer < @animation_duration
             @animation_timer += dt
+
+    draw: (radius) =>
+        x = 0
+        y = 0
+        love.graphics.setColor @color
+        if @selected
+            radius += 5
+        love.graphics.circle("fill", x, y, radius, 2 * radius)
+        love.graphics.setColor darker @color
+        love.graphics.setLineWidth 2
+        love.graphics.circle("line", x, y, radius, 2 * radius)
+        x -= radius / 3
+        y -= radius / 3
+        love.graphics.setColor lighter @color
+        -- love.graphics.circle "fill", x, y, radius / 2, radius
+        -- love.graphics.setColor {255, 255, 255}
+        love.graphics.circle "fill", x, y, radius / 4, radius
+
 
     adjacent: (otherP) =>
         dx = math.abs(@i - otherP.i)
@@ -113,7 +131,11 @@ class Grid
 
         for i, col in pairs @points
             for j, point in pairs col
-                @drawPoint point
+                {x, y} = @pointCoordinate point
+                love.graphics.push!
+                love.graphics.translate x, y
+                point\draw @pointsRadius
+                love.graphics.pop!
 
         if @selecting
             first_p = @selection[1]
@@ -129,17 +151,6 @@ class Grid
                 prev_p = p
             {prev_x, prev_y} = @pointCoordinate prev_p
             love.graphics.line prev_x, prev_y, mX, mY
-
-    drawPoint: (p) =>
-        love.graphics.setColor p.color
-        {x, y} = @pointCoordinate p
-        local fillage, radius
-        fillage = "fill"
-        radius = @pointsRadius
-        if p.selected
-            radius += 5
-        love.graphics.circle(fillage, x, y, radius, 2 * radius)
-
 
     select: (p) =>
         table.insert @selection, p
