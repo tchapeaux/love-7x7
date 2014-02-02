@@ -1,12 +1,12 @@
 export randomColor, lighter, darker
 
 colors = {
-    {255, 0, 0}
-    {0, 0, 255}
-    {0, 255, 0}
-    {0, 255, 255}
-    {255, 0, 255}
-    {255, 255, 0}
+    {180, 82, 205} -- mediumorchid 3 (purple)
+    {0, 201, 87} -- emeraldgreen
+    {255, 106, 105} -- indianred
+    {255, 193, 37} -- goldenrod 1 (yellow)
+    {0, 255, 255} -- cyan/aqua
+    {28, 134, 238} -- dogerblue 2 (dark blue)
 }
 
 randomColor = ->
