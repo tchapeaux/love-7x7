@@ -9,6 +9,7 @@ R: Reset Grid
 
 export creditText = "7x7 - an open-source clone of DOTS
 Original game: www.weplaydots.com
+Font: http://loudifier.com/comic-relief/
 
 
 Made by Altom for a pretty Cookie
