@@ -1,5 +1,5 @@
 love.conf = (t) ->
-    t.title = "7x7"        -- The title of the window the game is in (string)
+    t.title = "PÖINTS"        -- The title of the window the game is in (string)
     t.author = "Altom"        -- The author of the game (string)
     t.url = nil                 -- The website of the game (string)
     t.identity = "7x7"            -- The name of the save directory (string)
