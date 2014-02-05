@@ -21,8 +21,6 @@ class Point
         x = 0
         y = 0
         love.graphics.setColor @color
-        if @selected
-            radius += 5
         love.graphics.circle("fill", x, y, radius, 2 * radius)
         love.graphics.setColor darker @color
         love.graphics.setLineWidth 2

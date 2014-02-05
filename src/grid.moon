@@ -115,7 +115,10 @@ class Grid
                 {x, y} = @pointCoordinate point
                 love.graphics.push!
                 love.graphics.translate x, y
-                point\draw @pointsRadius
+                radius = @pointsRadius
+                if point.selected or (@selectionLoopPoint and point.color == @selectionLoopPoint.color)
+                    radius += 5
+                point\draw radius
                 love.graphics.pop!
 
 
