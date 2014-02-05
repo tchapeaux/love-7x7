@@ -5,6 +5,8 @@ export grid, menu
 w, h = love.graphics.getWidth!, love.graphics.getHeight!
 gridSize = 7
 
+require "resources"
+
 love.load = ->
     require "grid"
     require "menu"

@@ -32,10 +32,19 @@ class Menu
         @optionHeight = 30
         @margin = 10
         @selected = 1
+        @logo = resources.logo
 
         @displayText = nil
 
     draw: =>
+        -- logo
+        x = (@w / 2) - (@logo\getWidth! / 2)
+        y = (@h / 4) - (@logo\getHeight! / 2)
+        love.graphics.setColor {255, 255, 255, 100}
+        love.graphics.rectangle "fill", x, y, @logo\getWidth!, @logo\getHeight!
+        love.graphics.setColor {255, 255, 255, 255}
+        love.graphics.draw @logo, x, y
+
         if @displayText
             love.graphics.setColor {0, 0, 0, 200}
             love.graphics.rectangle("fill", 0, @h / 4, @w, @h / 2)
