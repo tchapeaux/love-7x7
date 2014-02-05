@@ -1,4 +1,5 @@
 require "grid"
+require "gamemenu"
 
 export ^
 
@@ -7,7 +8,7 @@ w, h = love.graphics.getWidth!, love.graphics.getHeight!
 class Game
     new: (gridSize, @timeLimit=-1, @maxMove=-1, changeGridSize=false) =>
         @grid = Grid gridSize
-        @menu = Menu!
+        @menu = GameMenu!
         @score = 0
         if love.filesystem.isFile "score.txt"
             score, _ = love.filesystem.read "score.txt"

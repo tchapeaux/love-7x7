@@ -8,7 +8,6 @@ gridSize = 7
 require "resources"
 
 love.load = ->
-    require "menu"
     require "game"
 
     font = love.graphics.newFont "res/font/ComicRelief.ttf", 20

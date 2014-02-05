@@ -17,7 +17,7 @@ Github: https://github.com/tchapeaux/love-7x7
 
 >>> Press Enter to return to the menu <<<"
 
-class Menu
+class GameMenu
     new: =>
         @active = false
         @w = love.graphics.getWidth!
@@ -86,7 +86,7 @@ class Menu
             when "Resume"
                 @active = false
             when "Reset Score"
-                grid.score = 0
+                game.grid.score = 0
                 @active= false
             when "Controls"
                 @displayText = controlsText
