@@ -15,7 +15,10 @@ class Grid
         @selection = {}
         @selecting = false
         @selectionLoopPoint = nil
+
         @score = 0
+        @moveCount = 0
+        @timer = 0
 
     topLeftCoord: =>
         gridWidth = 2 * @pointsRadius * @size + @pointsMargin * (@size - 1)
@@ -52,6 +55,7 @@ class Grid
 
 
     update: (dt) =>
+        @timer += dt
         for i, col in pairs @points
             for j, point in pairs col
                 point\update dt
@@ -144,13 +148,16 @@ class Grid
 
     clearSelected: =>
         mustDelete = #@selection > 1
+        -- move count
+        if mustDelete
+            @moveCount += 1
         -- delete selection
         for i, p in ipairs @selection
             if mustDelete
                 @deletePoint p
             else
                 p.selected = false
-        -- selectionLoop : delete all point of the same color
+        -- if selection loop : delete all point of the same color
         if @selectionLoopPoint
             selectColor = @selectionLoopPoint.color
             for i, col in pairs @points
