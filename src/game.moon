@@ -10,23 +10,76 @@ class Game
         @grid = Grid gridSize
         @menu = GameMenu!
         @score = 0
+        @selection = {}
+        @selecting = false
+        @selectionLoopPoint = nil
         if love.filesystem.isFile "score.txt"
             score, _ = love.filesystem.read "score.txt"
             score = tonumber score
-            @grid.score = score
+            @score = score
 
     update: (dt) =>
         if @menu.active
             @menu\update dt
         else
             @grid\update dt
+        if @selecting
+            lastP = @selection[#@selection]
+            local lastlastP
+            if #@selection > 1
+                lastlastP = @selection[#@selection - 1]
+            mX, mY = love.mouse.getX!, love.mouse.getY!
+            mouseP = @grid\insidePoint mX, mY
+            if mouseP and lastP\adjacent(mouseP) and lastP.color == mouseP.color
+                if mouseP == lastlastP
+                    if @selectionLoopPoint == lastP
+                        -- TODO: fix this hack: should be handled by unselect
+                        @selection[#@selection] = nil
+                        @selectionLoopPoint = nil
+                    else
+                        @unselect lastP
+                else
+                    unless lastP == @selectionLoopPoint and @inSelection mouseP
+                        if @inSelection mouseP
+                            @selectionLoopPoint = mouseP
+                        @select mouseP
 
     draw: =>
-        @grid\draw!
+        @drawBackground!
+        if #@selection > 0
+            @drawSelectionLines selection
+        @grid\draw @selection
         if @menu.active
             love.graphics.setColor {0, 0, 0, 100}
             love.graphics.rectangle "fill", 0, 0, w, h
             @menu\draw!
+        love.graphics.setColor {0, 0, 0}
+        love.graphics.printf "Score: #{@score}",
+            w/2, 10, w/2 - 10, "right"
+
+    drawBackground: =>
+        love.graphics.setBackgroundColor {255, 255, 255}
+        if @selecting and @selectionLoopPoint
+            loopColor = @selectionLoopPoint.color
+            r, g, b = loopColor[1], loopColor[2], loopColor[3]
+            alpha = 100
+            love.graphics.setColor {r, g, b, alpha}
+            love.graphics.rectangle "fill", 0, 0, w, h
+
+    drawSelectionLines: =>
+        first_p = @selection[1]
+        love.graphics.setColor darker first_p.color
+        love.graphics.setLineWidth 5
+        mX, mY = love.mouse.getX!, love.mouse.getY!
+        prev_p = first_p
+        for i, p in ipairs @selection
+            if i > 1
+                {prev_x, prev_y} = @grid\pointCoordinate prev_p
+                {cur_x, cur_y} = @grid\pointCoordinate p
+                love.graphics.line prev_x, prev_y, cur_x, cur_y
+            prev_p = p
+        {prev_x, prev_y} = @grid\pointCoordinate prev_p
+        love.graphics.line prev_x, prev_y, mX, mY
 
     resetGrid: (newSize=@grid.size) =>
         if newSize == "up"
@@ -37,12 +90,65 @@ class Game
         @grid = Grid newSize
         @grid.score = score
 
+    inSelection: (p) =>
+        for i, selectP in ipairs @selection
+            if p == selectP
+                return true
+        return false
+
+    select: (p) =>
+        table.insert @selection, p
+        p.selected = true
+
+    unselect: (p) =>
+        -- find and remove point
+        for i, point in ipairs @selection
+            if point == p
+                table.remove @selection, i
+                break
+        if @selectionLoopPoint == p
+            @selectionLoopPoint = nil
+        p.selected = false
+
+    clearSelected: =>
+        mustDelete = #@selection > 1
+        -- move count
+        if mustDelete
+            @grid.moveCount += 1
+        -- delete selection
+        for i, p in ipairs @selection
+            if mustDelete
+                @deletePoint p
+            else
+                p.selected = false
+        -- if selection loop : delete all point of the same color
+        if @selectionLoopPoint
+            selectColor = @selectionLoopPoint.color
+            for i, col in pairs @grid.points
+                for j, p in pairs col
+                    if p.color == selectColor
+                        @deletePoint p
+        @selection = {}
+        @selectionLoopPoint = nil
+        love.filesystem.write "score.txt", "#{@score}"
+
+    deletePoint: (p) =>
+        @score += 1
+        @grid\deletePoint p
 
     mousepressed: (x, y, button) =>
-        @grid\mousepressed x, y, button
+        switch button
+            when "l"
+                mouseP = @grid\insidePoint(x, y)
+                if mouseP
+                    @selecting = true
+                    @select mouseP
 
     mousereleased: (x, y, button) =>
-        @grid\mousereleased x, y, button
+        switch button
+            when "l"
+                @selecting = false
+                @clearSelected!
 
     keyreleased: (key) =>
         switch key
