@@ -185,7 +185,8 @@ class Game
                     @menu\keyreleased key
             when "r"
                 unless @menu.active
-                    @resetGrid!
+                    if @changeGridSize
+                        @resetGrid!
             when "up"
                 if @menu.active
                     @menu\keyreleased key
