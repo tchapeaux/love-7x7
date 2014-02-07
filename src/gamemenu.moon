@@ -1,6 +1,8 @@
 export ^
 
 controlsText = "Click and drag to match similar colors
+
+In infinite mode:
 Up/Down arrows: change grid size
 R: Reset Grid
 
