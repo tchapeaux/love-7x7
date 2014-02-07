@@ -48,14 +48,21 @@ class Game
         @drawBackground!
         if #@selection > 0
             @drawSelectionLines selection
-        @grid\draw @selection
-        if @menu.active
-            love.graphics.setColor {0, 0, 0, 100}
-            love.graphics.rectangle "fill", 0, 0, w, h
-            @menu\draw!
+        @grid\draw!
         love.graphics.setColor {0, 0, 0}
-        love.graphics.printf "Score: #{@score}",
+        local hud_string
+        hud_string = ""
+        hud_string ..= "Score: #{@score}"
+        if @timeLimit > -1
+            displayTime = @timeLimit - math.floor @grid.timer
+            hud_string ..= "\nRemaining Time: #{displayTime}"
+        if @maxMove > -1
+            hud_string ..= "\nMoves: #{@grid.moveCount} / #{@maxMove}"
+        love.graphics.printf hud_string,
             w/2, 10, w/2 - 10, "right"
+
+        if @menu.active
+            @menu\draw!
 
     drawBackground: =>
         love.graphics.setBackgroundColor {255, 255, 255}

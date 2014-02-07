@@ -37,6 +37,9 @@ class GameMenu
         @displayText = nil
 
     draw: =>
+        -- darken game screen (drawn previously)
+        love.graphics.setColor {0, 0, 0, 100}
+        love.graphics.rectangle "fill", 0, 0, @w, @h
         -- logo
         x = (@w / 2) - (@logo\getWidth! / 2)
         y = (@h / 4) - (@logo\getHeight! / 2)

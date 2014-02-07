@@ -56,7 +56,7 @@ class Grid
             for j, point in pairs col
                 point\update dt
 
-    draw: (selection) =>
+    draw: =>
         @drawPoints!
 
     drawPoints: =>
