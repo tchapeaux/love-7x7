@@ -96,4 +96,4 @@ class GameMenu
             when "Credits"
                 @displayText = creditText
             when "Quit"
-                love.event.quit!
+                statestack\pop!
