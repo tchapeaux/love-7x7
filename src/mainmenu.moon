@@ -33,9 +33,9 @@ class MainMenu
                 love.graphics.setColor {255, 255, 255}
             else
                 love.graphics.setColor {100, 100, 100}
-            love.graphics.printf text, (i-1) * @w / 3, 3 * @h / 4, @w / 3, "center"
+            love.graphics.printf text, (i-1) * @w / 3, 3 * @h / 4 - 25, @w / 3, "center"
         love.graphics.setColor {100, 100, 100}
-        love.graphics.printf "Press escape to quit", 0, @h - 30, @w, "center"
+        love.graphics.printf "Press escape to quit", 0, @h - 50, @w, "center"
         love.graphics.printf "Use arrows to select mode", 0, @h / 2, @w, "center"
 
     keyreleased: (key) =>
