@@ -71,10 +71,10 @@ class GameMenu
         switch key
             when "up"
                 @selected -= 1
-                @selected = ((@selected - 1) % #@options) + 1
+                @selected = lua_mod @selected, #@options
             when "down"
                 @selected += 1
-                @selected = ((@selected - 1) % #@options) + 1
+                @selected = lua_mod @selected, #@options
             when "return"
                 if @displayText
                     @displayText = nil
