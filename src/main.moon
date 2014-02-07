@@ -21,16 +21,25 @@ current_state = ->
     statestack\peek!
 
 love.draw = ->
-    current_state!\draw!
+    if current_state!.draw
+        current_state!\draw!
 
 love.update = (dt) ->
-    current_state!\update dt
+    if current_state!.update
+        current_state!\update dt
+
+love.keypressed = (key) ->
+    if current_state!.keypressed
+        current_state!\keypressed key
 
 love.keyreleased = (key) ->
-    current_state!\keyreleased key
+    if current_state!.keyreleased
+        current_state!\keyreleased key
 
 love.mousepressed = (x, y, button) ->
-    current_state!\mousepressed(x, y, button)
+    if current_state!.mousepressed
+        current_state!\mousepressed(x, y, button)
 
 love.mousereleased = (x, y, button) ->
-    current_state!\mousereleased(x, y, button)
+    if current_state!.mousereleased
+        current_state!\mousereleased(x, y, button)
