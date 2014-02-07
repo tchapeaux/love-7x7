@@ -22,6 +22,8 @@ class MainMenu
 
 
     draw: =>
+        love.graphics.setColor {0, 0, 0}
+        love.graphics.rectangle "fill", 0, 0, @w, @h
         love.graphics.setFont @fontBig
         love.graphics.setColor {255, 255, 255}
         love.graphics.printf @title, 0, @h / 8, @w, "center"
@@ -30,8 +32,11 @@ class MainMenu
             if i == @selected
                 love.graphics.setColor {255, 255, 255}
             else
-                love.graphics.setColor {200, 200, 200}
+                love.graphics.setColor {100, 100, 100}
             love.graphics.printf text, (i-1) * @w / 3, 3 * @h / 4, @w / 3, "center"
+        love.graphics.setColor {100, 100, 100}
+        love.graphics.printf "Press escape to quit", 0, @h - 30, @w, "center"
+        love.graphics.printf "Use arrows to select mode", 0, @h / 2, @w, "center"
 
     keyreleased: (key) =>
         switch key
@@ -50,11 +55,11 @@ class MainMenu
         gameMode = @text[@selected]
         local game
         if gameMode == "Time Mode"
-            game = Game @defaultGridSize, 30
+            game = Game @defaultGridSize, 1
         elseif gameMode == "Move Mode"
-            game = Game @defaultGridSize, -1, 30
+            game = Game @defaultGridSize, -1, 1
         elseif gameMode == "Infinite Mode"
-            game = Game @defaultGridSize
+            game = Game @defaultGridSize, -1, -1, true
         else
             error "Invalid game mode: #[gameMode}"
         statestack\push game
