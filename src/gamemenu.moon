@@ -1,13 +1,13 @@
 export ^
 
-export controlsText = "Click and drag to match similar colors
+controlsText = "Click and drag to match similar colors
 Up/Down arrows: change grid size
 R: Reset Grid
 
 
 >>> Press Enter to return to the menu <<<"
 
-export creditText = "7x7 - an open-source clone of DOTS
+creditText = "7x7 - an open-source clone of DOTS
 Original game: www.weplaydots.com
 Font: http://loudifier.com/comic-relief/
 
