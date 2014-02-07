@@ -24,7 +24,6 @@ class GameMenu
         @h = love.graphics.getHeight!
         @options = {
             "Resume"
-            "Reset Score"
             "Controls"
             "Credits"
             "Quit"
@@ -88,9 +87,6 @@ class GameMenu
         switch @options[@selected]
             when "Resume"
                 @active = false
-            when "Reset Score"
-                game.grid.score = 0
-                @active= false
             when "Controls"
                 @displayText = controlsText
             when "Credits"
