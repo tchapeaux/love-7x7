@@ -7,7 +7,7 @@ export ^
 w, h = love.graphics.getWidth!, love.graphics.getHeight!
 
 class Game
-    new: (gridSize, @timeLimit=-1, @maxMove=-1, changeGridSize=false) =>
+    new: (gridSize, @scoreFile, @timeLimit=-1, @maxMove=-1, @changeGridSize=false, @cumulativeScore = false) =>
         @font = love.graphics.newFont "res/font/ComicRelief.ttf", 20
         @grid = Grid gridSize
         @menu = GameMenu!
@@ -15,8 +15,10 @@ class Game
         @selection = {}
         @selecting = false
         @selectionLoopPoint = nil
-        if love.filesystem.isFile "score.txt"
-            score, _ = love.filesystem.read "score.txt"
+        if @cumulativeScore
+            if not love.filesystem.isFile scoreFile
+                love.filesystem.write @scoreFile, "0"
+            score, _ = love.filesystem.read @scoreFile
             score = tonumber score
             @score = score
 
@@ -28,7 +30,7 @@ class Game
         @checkNewSelection love.mouse.getX!, love.mouse.getY!
         if @endOfGame!
             statestack\pop!
-            statestack\push EndState @score
+            statestack\push EndState @score, @scoreFile
 
     endOfGame: =>
         if @timeLimit > -1 and @grid.timer >= @timeLimit
@@ -153,7 +155,8 @@ class Game
                         @deletePoint p
         @selection = {}
         @selectionLoopPoint = nil
-        love.filesystem.write "score.txt", "#{@score}"
+        if @cumulativeScore
+            love.filesystem.write @scoreFile, "#{@score}"
 
     deletePoint: (p) =>
         @score += 1

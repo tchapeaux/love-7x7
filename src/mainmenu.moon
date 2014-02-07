@@ -55,11 +55,11 @@ class MainMenu
         gameMode = @text[@selected]
         local game
         if gameMode == "Time Mode"
-            game = Game @defaultGridSize, 1
+            game = Game @defaultGridSize, "time_score.txt", 30
         elseif gameMode == "Move Mode"
-            game = Game @defaultGridSize, -1, 1
+            game = Game @defaultGridSize, "move_score.txt", -1, 30
         elseif gameMode == "Infinite Mode"
-            game = Game @defaultGridSize, -1, -1, true
+            game = Game @defaultGridSize, "infinite_score.txt", -1, -1, true, true
         else
-            error "Invalid game mode: #[gameMode}"
+            error "Invalid game mode: #{gameMode}"
         statestack\push game
