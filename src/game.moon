@@ -7,6 +7,7 @@ w, h = love.graphics.getWidth!, love.graphics.getHeight!
 
 class Game
     new: (gridSize, @timeLimit=-1, @maxMove=-1, changeGridSize=false) =>
+        @font = love.graphics.newFont "res/font/ComicRelief.ttf", 20
         @grid = Grid gridSize
         @menu = GameMenu!
         @score = 0
@@ -58,6 +59,7 @@ class Game
             hud_string ..= "\nRemaining Time: #{displayTime}"
         if @maxMove > -1
             hud_string ..= "\nMoves: #{@grid.moveCount} / #{@maxMove}"
+        love.graphics.setFont @font
         love.graphics.printf hud_string,
             w/2, 10, w/2 - 10, "right"
 
