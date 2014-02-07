@@ -1,5 +1,6 @@
 require "grid"
 require "gamemenu"
+require "endstate"
 
 export ^
 
@@ -24,6 +25,19 @@ class Game
             @menu\update dt
         else
             @grid\update dt
+        @checkNewSelection love.mouse.getX!, love.mouse.getY!
+        if @endOfGame!
+            statestack\pop!
+            statestack\push EndState @score
+
+    endOfGame: =>
+        if @timeLimit > -1 and @grid.timer >= @timeLimit
+            return true
+        if @maxMove > -1 and @grid.moveCount >= @maxMove
+            return true
+        return false
+
+    checkNewSelection: (mX, mY) =>
         if @selecting
             lastP = @selection[#@selection]
             local lastlastP
@@ -173,12 +187,14 @@ class Game
                 if @menu.active
                     @menu\keyreleased key
                 else
-                    @resetGrid "up"
+                    if @changeGridSize
+                        @resetGrid "up"
             when "down"
                 if @menu.active
                     @menu\keyreleased key
                 else
-                    @resetGrid "down"
+                    if @changeGridSize
+                        @resetGrid "down"
             when "f11"
                 width, height, fullscreen, vsync, fsaa = love.graphics.getMode!
                 love.graphics.setMode width, height, not fullscreen, vsync, fsaa
