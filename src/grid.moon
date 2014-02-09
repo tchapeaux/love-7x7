@@ -5,8 +5,6 @@ require "colors"
 
 class Grid
     new: (@size) =>
-        @w = love.graphics.getWidth!
-        @h = love.graphics.getHeight!
         @pointsRadius = 20
         @pointsMargin = 20
         -- point grid:
@@ -19,7 +17,7 @@ class Grid
     topLeftCoord: =>
         gridWidth = 2 * @pointsRadius * @size + @pointsMargin * (@size - 1)
         gridHeight = 2 * @pointsRadius * @size + @pointsMargin * (@size - 1)
-        return {@w / 2 - gridWidth / 2, @h / 2 - gridHeight / 2}
+        return {wScr! / 2 - gridWidth / 2, hScr! / 2 - gridHeight / 2}
 
     pointCoordinate: (p) =>
         -- give screen coordinate of point p

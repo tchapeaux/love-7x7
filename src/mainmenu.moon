@@ -4,8 +4,6 @@ require "game"
 
 class MainMenu
     new: =>
-        @w = love.graphics.getWidth!
-        @h = love.graphics.getHeight!
         @fontBig = love.graphics.newFont "res/font/ComicRelief.ttf", 100
         @fontMed = love.graphics.newFont "res/font/ComicRelief.ttf", 20
         @title = "PÖINTS"
@@ -23,20 +21,23 @@ class MainMenu
 
     draw: =>
         love.graphics.setColor {0, 0, 0}
-        love.graphics.rectangle "fill", 0, 0, @w, @h
+        love.graphics.rectangle "fill", 0, 0, wScr!, hScr!
         love.graphics.setFont @fontBig
         love.graphics.setColor {255, 255, 255}
-        love.graphics.printf @title, 0, @h / 8, @w, "center"
+        love.graphics.printf @title, 0, hScr! / 8, wScr!, "center"
         love.graphics.setFont @fontMed
         for i, text in ipairs @text
             if i == @selected
                 love.graphics.setColor {255, 255, 255}
             else
                 love.graphics.setColor {100, 100, 100}
-            love.graphics.printf text, (i-1) * @w / 3, 3 * @h / 4 - 25, @w / 3, "center"
+            love.graphics.printf text,
+                (i-1) * wScr! / 3, 3 * hScr! / 4 - 25, wScr! / 3, "center"
         love.graphics.setColor {100, 100, 100}
-        love.graphics.printf "Press escape to quit", 0, @h - 50, @w, "center"
-        love.graphics.printf "Use arrows to select mode", 0, @h / 2, @w, "center"
+        love.graphics.printf "Press escape to quit",
+            0, hScr! - 50, wScr!, "center"
+        love.graphics.printf "Use arrows to select mode",
+            0, hScr! / 2, wScr!, "center"
 
     keyreleased: (key) =>
         switch key

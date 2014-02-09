@@ -4,8 +4,6 @@ require "endstate"
 
 export ^
 
-w, h = love.graphics.getWidth!, love.graphics.getHeight!
-
 class Game
     new: (gridSize, @scoreFile, @timeLimit=-1, @maxMove=-1, @changeGridSize=false, @cumulativeScore = false) =>
         @font = love.graphics.newFont "res/font/ComicRelief.ttf", 20
@@ -77,7 +75,7 @@ class Game
             hud_string ..= "\nMoves: #{@grid.moveCount} / #{@maxMove}"
         love.graphics.setFont @font
         love.graphics.printf hud_string,
-            w/2, 10, w/2 - 10, "right"
+            wScr!/2, 10, wScr!/2 - 10, "right"
 
         if @menu.active
             @menu\draw!
@@ -89,7 +87,7 @@ class Game
             r, g, b = loopColor[1], loopColor[2], loopColor[3]
             alpha = 100
             love.graphics.setColor {r, g, b, alpha}
-            love.graphics.rectangle "fill", 0, 0, w, h
+            love.graphics.rectangle "fill", 0, 0, wScr!, hScr!
 
     drawSelectionLines: =>
         first_p = @selection[1]

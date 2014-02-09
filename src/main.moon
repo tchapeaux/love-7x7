@@ -2,7 +2,8 @@ io.stdout\setvbuf'no'
 
 export statestack
 
-w, h = love.graphics.getWidth!, love.graphics.getHeight!
+export wScr, hScr
+wScr, hScr = love.window.getWidth, love.window.getHeight
 gridSize = 7
 
 export lua_mod = (x, m) ->

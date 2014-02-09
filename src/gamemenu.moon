@@ -22,8 +22,6 @@ Github: https://github.com/tchapeaux/love-7x7
 class GameMenu
     new: =>
         @active = false
-        @w = love.graphics.getWidth!
-        @h = love.graphics.getHeight!
         @options = {
             "Resume"
             "Controls"
@@ -40,10 +38,10 @@ class GameMenu
     draw: =>
         -- darken game screen (drawn previously)
         love.graphics.setColor {0, 0, 0, 100}
-        love.graphics.rectangle "fill", 0, 0, @w, @h
+        love.graphics.rectangle "fill", 0, 0, wScr!, hScr!
         -- logo
-        x = (@w / 2) - (@logo\getWidth! / 2)
-        y = (@h / 4) - (@logo\getHeight! / 2)
+        x = (wScr! / 2) - (@logo\getWidth! / 2)
+        y = (hScr! / 4) - (@logo\getHeight! / 2)
         love.graphics.setColor {255, 255, 255, 100}
         love.graphics.rectangle "fill", x, y, @logo\getWidth!, @logo\getHeight!
         love.graphics.setColor {255, 255, 255, 255}
@@ -51,20 +49,22 @@ class GameMenu
 
         if @displayText
             love.graphics.setColor {0, 0, 0, 200}
-            love.graphics.rectangle("fill", 0, @h / 4, @w, @h / 2)
+            love.graphics.rectangle("fill", 0, hScr! / 4, wScr!, hScr! / 2)
             love.graphics.setColor {255, 255, 255}
-            love.graphics.printf @displayText, 0, @h / 4 + 30, @w, "center"
+            love.graphics.printf @displayText,
+                0, hScr! / 4 + 30, wScr!, "center"
         else
             for i, opt in ipairs @options
                 love.graphics.setColor {0, 0, 0, 200}
-                yO = @h / 2 - (#@options * @optionHeight + (#@options - 1) * @margin) / 2
+                optionBlockH = #@options * @optionHeight + (#@options - 1) * @margin
+                yO = hScr! / 2 - optionBlockH / 2
                 y = yO + (i-1) * (@optionHeight + @margin)
-                love.graphics.rectangle "fill", 0, y, @w, @optionHeight
+                love.graphics.rectangle "fill", 0, y, wScr!, @optionHeight
                 love.graphics.setColor {255, 255, 255}
-                love.graphics.printf opt, 0, y, @w, "center"
+                love.graphics.printf opt, 0, y, wScr!, "center"
                 if i == @selected
-                    love.graphics.printf ">>>>", 0, y, @w, "left"
-                    love.graphics.printf "<<<<", 0, y, @w, "right"
+                    love.graphics.printf ">>>>", 0, y, wScr!, "left"
+                    love.graphics.printf "<<<<", 0, y, wScr!, "right"
 
     update: (dt) =>
 
