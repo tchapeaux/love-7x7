@@ -9,6 +9,8 @@ class Game
         @font = love.graphics.newFont "res/font/ComicRelief.ttf", 20
         @grid = Grid gridSize
         @menu = GameMenu!
+        @savedWindowWidth = love.window.getWidth!
+        @savedWindowHeight = love.window.getHeight!
         @score = 0
         @selection = {}
         @selecting = false
@@ -199,7 +201,14 @@ class Game
                         @resetGrid "down"
             when "f11"
                 width, height, flags = love.window.getMode!
-                flags["fullscreen"] = not flags["fullscreen"]
+                if flags["fullscreen"]
+                    flags["fullscreen"] = false
+                    width, height = @savedWindowWidth, @savedWindowHeight
+                else
+                    @savedWindowWidth = width
+                    @savedWindowHeight = height
+                    width, height = love.window.getDesktopDimensions!
+                    flags["fullscreen"] = true
                 love.window.setMode width, height, flags
             else
                 if @menu.active
