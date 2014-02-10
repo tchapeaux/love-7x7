@@ -61,7 +61,7 @@ class Grid
                 love.graphics.push!
                 love.graphics.translate x, y
                 radius = @pointsRadius
-                if point.selected or (highlightColor and point.color == highlightColor)
+                if point.selected or point.color == highlightColor
                     radius += 5
                 point\draw radius
                 love.graphics.pop!
