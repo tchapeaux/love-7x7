@@ -26,7 +26,8 @@ class GameMenu
             "Resume"
             "Controls"
             "Credits"
-            "Quit"
+            "Go back to menu"
+            "Quit game"
         }
         @optionHeight = 30
         @margin = 10
@@ -93,5 +94,7 @@ class GameMenu
                 @displayText = controlsText
             when "Credits"
                 @displayText = creditText
-            when "Quit"
+            when "Go back to menu"
                 statestack\pop!
+            when "Quit game"
+                love.event.quit!
