@@ -14,7 +14,7 @@ class Game
         @score = 0
         @selection = {}
         @selecting = false
-        @selectionLoopPoint = nil
+        @selectLoopPoint = nil
         if @cumulativeScore
             if not love.filesystem.isFile scoreFile
                 love.filesystem.write @scoreFile, "0"
@@ -49,23 +49,23 @@ class Game
             mouseP = @grid\insidePoint mX, mY
             if mouseP and lastP\adjacent(mouseP) and lastP.color == mouseP.color
                 if mouseP == lastlastP
-                    if @selectionLoopPoint == lastP
+                    if @selectLoopPoint == lastP
                         -- TODO: fix this hack: should be handled by unselect
                         @selection[#@selection] = nil
-                        @selectionLoopPoint = nil
+                        @selectLoopPoint = nil
                     else
                         @unselect lastP
                 else
-                    unless lastP == @selectionLoopPoint and @inSelection mouseP
+                    unless lastP == @selectLoopPoint and @inSelection mouseP
                         if @inSelection mouseP
-                            @selectionLoopPoint = mouseP
+                            @selectLoopPoint = mouseP
                         @select mouseP
 
     draw: =>
         @drawBackground!
         if #@selection > 0
             @drawSelectionLines selection
-        @grid\draw!
+        @grid\draw @selectLoopColor!
         love.graphics.setColor {0, 0, 0}
         local hud_string
         hud_string = ""
@@ -84,8 +84,8 @@ class Game
 
     drawBackground: =>
         love.graphics.setBackgroundColor {255, 255, 255}
-        if @selecting and @selectionLoopPoint
-            loopColor = @selectionLoopPoint.color
+        if @selecting and @selectLoopPoint
+            loopColor = @selectLoopPoint.color
             r, g, b = loopColor[1], loopColor[2], loopColor[3]
             alpha = 100
             love.graphics.setColor {r, g, b, alpha}
@@ -121,6 +121,11 @@ class Game
                 return true
         return false
 
+    selectLoopColor: =>
+        if @selectLoopPoint
+            return @selectLoopPoint.color
+        return nil
+
     select: (p) =>
         table.insert @selection, p
         p.selected = true
@@ -131,8 +136,8 @@ class Game
             if point == p
                 table.remove @selection, i
                 break
-        if @selectionLoopPoint == p
-            @selectionLoopPoint = nil
+        if @selectLoopPoint == p
+            @selectLoopPoint = nil
         p.selected = false
 
     clearSelected: =>
@@ -147,14 +152,14 @@ class Game
             else
                 p.selected = false
         -- if selection loop : delete all point of the same color
-        if @selectionLoopPoint
-            selectColor = @selectionLoopPoint.color
+        if @selectLoopPoint
+            selectColor = @selectLoopPoint.color
             for i, col in pairs @grid.points
                 for j, p in pairs col
                     if p.color == selectColor
                         @deletePoint p
         @selection = {}
-        @selectionLoopPoint = nil
+        @selectLoopPoint = nil
         if @cumulativeScore
             love.filesystem.write @scoreFile, "#{@score}"
 

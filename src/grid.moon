@@ -54,17 +54,14 @@ class Grid
             for j, point in pairs col
                 point\update dt
 
-    draw: =>
-        @drawPoints!
-
-    drawPoints: =>
+    draw: (highlightColor) =>
         for i, col in pairs @points
             for j, point in pairs col
                 {x, y} = @pointCoordinate point
                 love.graphics.push!
                 love.graphics.translate x, y
                 radius = @pointsRadius
-                if point.selected or (@selectionLoopPoint and point.color == @selectionLoopPoint.color)
+                if point.selected or (highlightColor and point.color == highlightColor)
                     radius += 5
                 point\draw radius
                 love.graphics.pop!
