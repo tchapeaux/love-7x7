@@ -5,8 +5,6 @@ require "colors"
 
 class Grid
     new: (@size) =>
-        @pointsRadius = 20
-        @pointsMargin = 20
         -- point grid:
         -- note that i is horizontal coordinate and j is vertical coordinate
         @points = [ [Point j, i for i=1, @size] for j=1, @size]
@@ -14,19 +12,24 @@ class Grid
         @moveCount = 0
         @timer = 0
 
+    pointsRadius: =>
+        wScr! / 40
+    pointsMargin: =>
+        wScr! / 50
+
     topLeftCoord: =>
-        gridWidth = 2 * @pointsRadius * @size + @pointsMargin * (@size - 1)
-        gridHeight = 2 * @pointsRadius * @size + @pointsMargin * (@size - 1)
+        gridWidth = 2 * @pointsRadius! * @size + @pointsMargin! * (@size - 1)
+        gridHeight = 2 * @pointsRadius! * @size + @pointsMargin! * (@size - 1)
         return {wScr! / 2 - gridWidth / 2, hScr! / 2 - gridHeight / 2}
 
     pointCoordinate: (p) =>
         -- give screen coordinate of point p
         i, j = p.i, p.j
-        pointSize = (2 * @pointsRadius + @pointsMargin)
+        pointSize = (2 * @pointsRadius! + @pointsMargin!)
         {offX, offY} = @topLeftCoord!
-        x = offX + @pointsMargin + (i - 1) * pointSize
-        y = offY + @pointsMargin + (j - 1) * pointSize
-        orig_y = offY + @pointsMargin + (p.origin_j - 1) * pointSize
+        x = offX + @pointsMargin! + (i - 1) * pointSize
+        y = offY + @pointsMargin! + (j - 1) * pointSize
+        orig_y = offY + @pointsMargin! + (p.origin_j - 1) * pointSize
         -- animation
         animation_scale = p.animation_timer / p.animation_duration
         y = orig_y + animation_scale * (y - orig_y)
@@ -43,7 +46,7 @@ class Grid
                 dx = xP - x
                 dy = yP - y
                 dist = math.sqrt dx * dx + dy * dy
-                if dist <= @pointsRadius
+                if dist <= @pointsRadius!
                     return @points[i][j]
         return nil
 
@@ -60,7 +63,7 @@ class Grid
                 {x, y} = @pointCoordinate point
                 love.graphics.push!
                 love.graphics.translate x, y
-                radius = @pointsRadius
+                radius = @pointsRadius!
                 if point.selected or point.color == highlightColor
                     radius += 5
                 point\draw radius
