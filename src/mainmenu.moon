@@ -1,6 +1,7 @@
 export ^
 
 require "game"
+require "point"
 
 class MainMenu
     new: =>
@@ -20,15 +21,14 @@ class MainMenu
 
 
     draw: =>
-        love.graphics.setColor {0, 0, 0}
-        love.graphics.rectangle "fill", 0, 0, wScr!, hScr!
+        love.graphics.setBackgroundColor 255, 255, 255
         love.graphics.setFont @fontBig
-        love.graphics.setColor {255, 255, 255}
+        love.graphics.setColor {0, 0, 0}
         love.graphics.printf @title, 0, hScr! / 8, wScr!, "center"
         love.graphics.setFont @fontMed
         for i, text in ipairs @text
             if i == @selected
-                love.graphics.setColor {255, 255, 255}
+                love.graphics.setColor {0, 0, 0}
             else
                 love.graphics.setColor {100, 100, 100}
             love.graphics.printf text,
