@@ -3,11 +3,11 @@ export ^
 require "colors"
 
 class Point
-    new: (@i, @j, @color=randomColor!, @origin_j = -3) =>
+    new: (@i, @j, @color=randomColor!, @origin_j = -3, initAnimation=true) =>
         @selected = false
         -- animation is handled by the Grid but the timer is here
-        @animation_timer = 0
         @animation_duration = math.random(45, 55) / 100
+        @animation_timer = if initAnimation then 0 else @animation_duration
 
     update: (dt) =>
         if @animation_timer > @animation_duration
@@ -18,6 +18,7 @@ class Point
             @animation_timer += dt
 
     draw: (radius) =>
+        -- assume the axis are placed at the point position
         x = 0
         y = 0
         love.graphics.setColor @color
