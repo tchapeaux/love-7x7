@@ -1,6 +1,6 @@
 love.conf = (t) ->
-    t.identity = "7x7"
-    t.version = "0.9.0"
+    t.identity = "POINTS"
+    t.version = "0.9.1"
     t.console = false
 
     t.window.title = "PÖINTS"
