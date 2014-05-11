@@ -204,7 +204,7 @@ class Game
                 else
                     if @changeGridSize
                         @resetGrid "down"
-            when "f11"
+            when "f"
                 width, height, flags = love.window.getMode!
                 if flags["fullscreen"]
                     flags["fullscreen"] = false
