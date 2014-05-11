@@ -1,7 +1,7 @@
 #!/bin/bash
 
-NAME=BLANK
-AUTHOR=BLANKMAN
+NAME=POINTS
+AUTHOR=Altom
 LOVE_VERSION=0.9.1
 
 mkdir -p gen_love
