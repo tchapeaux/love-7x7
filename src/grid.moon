@@ -24,15 +24,11 @@ class Grid
 
     pointCoordinate: (p) =>
         -- give screen coordinate of point p
-        i, j = p.i, p.j
+        i, j = p.i, p.drawJ
         pointSize = (2 * @pointsRadius! + @pointsMargin!)
         {offX, offY} = @topLeftCoord!
         x = offX + @pointsMargin! + (i - 1) * pointSize
         y = offY + @pointsMargin! + (j - 1) * pointSize
-        orig_y = offY + @pointsMargin! + (p.origin_j - 1) * pointSize
-        -- animation
-        animation_scale = p.animation_timer / p.animation_duration
-        y = orig_y + animation_scale * (y - orig_y)
         return {x, y}
 
     insidePoint: (x, y) =>

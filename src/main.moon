@@ -1,10 +1,14 @@
 io.stdout\setvbuf'no'
 
+export flux
+
 export statestack
 
 export wScr, hScr
 wScr, hScr = love.window.getWidth, love.window.getHeight
 gridSize = 7
+
+flux = require "lib/flux/flux"
 
 export lua_mod = (x, m) ->
     -- returns a modulo of x usable with 1-based table
@@ -26,6 +30,7 @@ love.draw = ->
         current_state!\draw!
 
 love.update = (dt) ->
+    flux.update(dt)
     if current_state!.update
         current_state!\update dt
 

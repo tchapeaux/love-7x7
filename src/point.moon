@@ -3,19 +3,19 @@ export ^
 require "colors"
 
 class Point
-    new: (@i, @j, @color=randomColor!, @origin_j = -3, initAnimation=true) =>
+    new: (@i, @j, @color=randomColor!, initAnimation=true) =>
         @selected = false
-        -- animation is handled by the Grid but the timer is here
-        @animation_duration = math.random(45, 55) / 100
-        @animation_timer = if initAnimation then 0 else @animation_duration
+        @drawJ = -2
+        @lasttween = nil
+        if initAnimation
+            distance = @j - @drawJ
+            randTime = .3 + .05 * distance + (love.math.random() - .5) / 4
+            @lasttween = flux.to(@, randTime, {drawJ: @j})\ease("backout")
+        else
+            @drawJ = @j
+
 
     update: (dt) =>
-        if @animation_timer > @animation_duration
-            @animation_timer = @animation_duration
-            if @origin_j ~= @j
-                @origin_j = @j
-        elseif @animation_timer < @animation_duration
-            @animation_timer += dt
 
     draw: (radius) =>
         -- assume the axis are placed at the point position
@@ -40,7 +40,9 @@ class Point
         return dx + dy == 1
 
     goDown: =>
-        @animation_timer = 0
-        @j = @j + 1
+        @j += 1
+        flux.remove(@lasttween) -- cancel previous tween if existing
+        randTime = .5 + love.math.random() / 2
+        @lasttween = flux.to(@, randTime, {drawJ: @j})\ease("backout")
 
 
