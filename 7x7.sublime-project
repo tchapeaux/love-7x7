@@ -2,8 +2,10 @@
     "build_systems":
     [
         {
-            "name": "Compile .moon files & Run",
-            "shell_cmd": "cp -ru ./res ./gen_love && cd ./src && moonc -t ../gen_love . && cd ../gen_love && ../thirdparty/love-release.sh -l -r build -n 7x7 -v 0.9.0 && cd build/0.9.0 && love 7x7.love",
+            "name": "lovemoon",
+            "selector": ["source.moon"],
+            "file_regex": "^(?:Error: )?\\s*\\[?([\\w/.]*?):([0-9]*):?([0-9]*)",
+            "shell_cmd": "bash love-sublime-build.sh",
             "working_dir": "$project_path"
         }
     ],
