@@ -2,7 +2,7 @@
 # script downloaded and adapted from https://github.com/MisterDA/love-release
 
 ## Edit this if you want to use another Löve version.
-LOVE_VERSION=0.8.0
+LOVE_VERSION=0.9.1
 
 
 ## Short help ##
